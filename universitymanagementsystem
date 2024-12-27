@@ -1,0 +1,500 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+// Main class
+public class UniversityManagementSystem {
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final University university = new University();
+
+    public static void main(String[] args) {
+        boolean exit = false;
+
+        while (!exit) {
+            System.out.println("\nUniversity Management System");
+            System.out.println("1. Add Student");
+            System.out.println("2. Add Course");
+            System.out.println("3. Add Department");
+            System.out.println("4. Add Professor");
+            System.out.println("5. Enroll Student in Course");
+            System.out.println("6. Assign Professor to Course");
+            System.out.println("7. Schedule Course");
+            System.out.println("8. View Students");
+            System.out.println("9. View Courses");
+            System.out.println("10. View Departments");
+            System.out.println("11. View Professors");
+            System.out.println("12. View Enrollments");
+            System.out.println("13. View Course Schedules");
+            System.out.println("14. Exit");
+            System.out.print("Select an option: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            try {
+                switch (choice) {
+                    case 1 -> addStudent();
+                    case 2 -> addCourse();
+                    case 3 -> addDepartment();
+                    case 4 -> addProfessor();
+                    case 5 -> enrollStudent();
+                    case 6 -> assignProfessor();
+                    case 7 -> scheduleCourse();
+                    case 8 -> viewStudents();
+                    case 9 -> viewCourses();
+                    case 10 -> viewDepartments();
+                    case 11 -> viewProfessors();
+                    case 12 -> viewEnrollments();
+                    case 13 -> viewCourseSchedules();
+                    case 14 -> exit = true;
+                    default -> System.out.println("Invalid choice. Please try again.");
+                }
+            } catch (Exception e) {
+                System.out.println("An error occurred: " + e.getMessage());
+            }
+        }
+    }
+
+    private static void addStudent() {
+        System.out.print("Enter student name: ");
+        String name = scanner.nextLine();
+        Student student = new Student(name);
+        university.addStudent(student);
+        System.out.println("Student added successfully.");
+    }
+
+    private static void addCourse() {
+        System.out.print("Enter course title: ");
+        String title = scanner.nextLine();
+        Course course = new Course(title);
+        university.addCourse(course);
+        System.out.println("Course added successfully.");
+    }
+
+    private static void addDepartment() {
+        System.out.print("Enter department name: ");
+        String name = scanner.nextLine();
+        Department department = new Department(name);
+        university.addDepartment(department);
+        System.out.println("Department added successfully.");
+    }
+
+    private static void addProfessor() {
+        System.out.print("Enter professor name: ");
+        String name = scanner.nextLine();
+        Professor professor = new Professor(name);
+        university.addProfessor(professor);
+        System.out.println("Professor added successfully.");
+    }
+
+    private static void enrollStudent() {
+        System.out.print("Enter student ID: ");
+        int studentId = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+        System.out.print("Enter course ID: ");
+        int courseId = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+
+        boolean success = university.enrollStudent(studentId, courseId);
+        if (success) {
+            System.out.println("Student enrolled successfully.");
+        } else {
+            System.out.println("Failed to enroll student. Check IDs.");
+        }
+    }
+
+    private static void assignProfessor() {
+        System.out.print("Enter professor ID: ");
+        int professorId = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+        System.out.print("Enter course ID: ");
+        int courseId = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+
+        boolean success = university.assignProfessor(professorId, courseId);
+        if (success) {
+            System.out.println("Professor assigned successfully.");
+        } else {
+            System.out.println("Failed to assign professor. Check IDs.");
+        }
+    }
+
+    private static void scheduleCourse() {
+        System.out.print("Enter course ID: ");
+        int courseId = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+        System.out.print("Enter day of the week: ");
+        String day = scanner.nextLine();
+        System.out.print("Enter start time (HH:MM): ");
+        String startTime = scanner.nextLine();
+        System.out.print("Enter end time (HH:MM): ");
+        String endTime = scanner.nextLine();
+
+        boolean success = university.scheduleCourse(courseId, day, startTime, endTime);
+        if (success) {
+            System.out.println("Course scheduled successfully.");
+        } else {
+            System.out.println("Failed to schedule course. Check IDs and times.");
+        }
+    }
+
+    private static void viewStudents() {
+        List<Student> students = university.getStudents();
+        if (students.isEmpty()) {
+            System.out.println("No students in the university.");
+        } else {
+            System.out.println("Students in the university:");
+            for (Student student : students) {
+                System.out.println(student);
+            }
+        }
+    }
+
+    private static void viewCourses() {
+        List<Course> courses = university.getCourses();
+        if (courses.isEmpty()) {
+            System.out.println("No courses in the university.");
+        } else {
+            System.out.println("Courses in the university:");
+            for (Course course : courses) {
+                System.out.println(course);
+            }
+        }
+    }
+
+    private static void viewDepartments() {
+        List<Department> departments = university.getDepartments();
+        if (departments.isEmpty()) {
+            System.out.println("No departments in the university.");
+        } else {
+            System.out.println("Departments in the university:");
+            for (Department department : departments) {
+                System.out.println(department);
+            }
+        }
+    }
+
+    private static void viewProfessors() {
+        List<Professor> professors = university.getProfessors();
+        if (professors.isEmpty()) {
+            System.out.println("No professors in the university.");
+        } else {
+            System.out.println("Professors in the university:");
+            for (Professor professor : professors) {
+                System.out.println(professor);
+            }
+        }
+    }
+
+    private static void viewEnrollments() {
+        List<Enrollment> enrollments = university.getEnrollments();
+        if (enrollments.isEmpty()) {
+            System.out.println("No enrollments in the university.");
+        } else {
+            System.out.println("Enrollments in the university:");
+            for (Enrollment enrollment : enrollments) {
+                System.out.println(enrollment);
+            }
+        }
+    }
+
+    private static void viewCourseSchedules() {
+        List<CourseSchedule> schedules = university.getCourseSchedules();
+        if (schedules.isEmpty()) {
+            System.out.println("No course schedules in the university.");
+        } else {
+            System.out.println("Course schedules in the university:");
+            for (CourseSchedule schedule : schedules) {
+                System.out.println(schedule);
+            }
+        }
+    }
+}
+
+// Student class
+class Student {
+    private static int nextId = 1;
+
+    private final int id;
+    private final String name;
+
+    public Student(String name) {
+        this.id = nextId++;
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return "Student ID: " + id + ", Name: " + name;
+    }
+}
+
+// Course class
+class Course {
+    private static int nextId = 1;
+
+    private final int id;
+    private final String title;
+
+    public Course(String title) {
+        this.id = nextId++;
+        this.title = title;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public String toString() {
+        return "Course ID: " + id + ", Title: " + title;
+    }
+}
+
+// Department class
+class Department {
+    private static int nextId = 1;
+
+    private final int id;
+    private final String name;
+
+    public Department(String name) {
+        this.id = nextId++;
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return "Department ID: " + id + ", Name: " + name;
+    }
+}
+
+// Professor class
+class Professor {
+    private static int nextId = 1;
+    private final int id;
+    private final String name;
+    private final List<Course> courses;
+
+    public Professor(String name) {
+        this.id = nextId++;
+        this.name = name;
+        this.courses = new ArrayList<>();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void assignCourse(Course course) {
+        courses.add(course);
+    }
+
+    @Override
+    public String toString() {
+        return "Professor ID: " + id + ", Name: " + name;
+    }
+}
+
+// Enrollment class
+class Enrollment {
+    private final Student student;
+    private final Course course;
+
+    public Enrollment(Student student, Course course) {
+        this.student = student;
+        this.course = course;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    @Override
+    public String toString() {
+        return "Student: " + student.getName() + ", Course: " + course.getTitle();
+    }
+}
+
+// CourseSchedule class
+class CourseSchedule {
+    private final Course course;
+    private final String day;
+    private final String startTime;
+    private final String endTime;
+
+    public CourseSchedule(Course course, String day, String startTime, String endTime) {
+        this.course = course;
+        this.day = day;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Course: " + course.getTitle() + ", Day: " + day + ", Time: " + startTime + " - " + endTime;
+    }
+}
+
+// University class
+class University {
+    private final List<Student> students = new ArrayList<>();
+    private final List<Course> courses = new ArrayList<>();
+    private final List<Department> departments = new ArrayList<>();
+    private final List<Professor> professors = new ArrayList<>();
+    private final List<Enrollment> enrollments = new ArrayList<>();
+    private final List<CourseSchedule> courseSchedules = new ArrayList<>();
+
+    public void addStudent(Student student) {
+        students.add(student);
+    }
+
+    public void addCourse(Course course) {
+        courses.add(course);
+    }
+
+    public void addDepartment(Department department) {
+        departments.add(department);
+    }
+
+    public void addProfessor(Professor professor) {
+        professors.add(professor);
+    }
+
+
+    public List<Student> getStudents() {
+        return new ArrayList<>(students);
+    }
+
+    public List<Course> getCourses() {
+        return new ArrayList<>(courses);
+    }
+
+    public List<Department> getDepartments() {
+        return new ArrayList<>(departments);
+    }
+
+    public List<Professor> getProfessors() {
+        return new ArrayList<>(professors);
+    }
+
+    public List<Enrollment> getEnrollments() {
+        return new ArrayList<>(enrollments);
+    }
+
+
+    public List<CourseSchedule> getCourseSchedules() {
+        return new ArrayList<>(courseSchedules);
+    }
+
+    public boolean enrollStudent(int studentId, int courseId) {
+        Student student = findStudentById(studentId);
+        Course course = findCourseById(courseId);
+
+        if (student != null && course != null) {
+            enrollments.add(new Enrollment(student, course));
+            return true;
+        }
+
+        return false;
+    }
+
+
+    public boolean assignProfessor(int professorId, int courseId) {
+        Professor professor = findProfessorById(professorId);
+        Course course = findCourseById(courseId);
+
+        if (professor != null && course != null) {
+            professor.assignCourse(course);
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean scheduleCourse(int courseId, String day, String startTime, String endTime) {
+        Course course = findCourseById(courseId);
+
+        if (course != null) {
+            courseSchedules.add(new CourseSchedule(course, day, startTime, endTime));
+            return true;
+        }
+
+        return false;
+    }
+
+
+    private Student findStudentById(int id) {
+        for (Student student : students) {
+            if (student.getId() == id) {
+                return student;
+            }
+        }
+        return null;
+    }
+
+
+    private Course findCourseById(int id) {
+        for (Course course : courses) {
+            if (course.getId() == id) {
+                return course;
+            }
+        }
+        return null;
+    }
+
+
+    private Professor findProfessorById(int id) {
+        for (Professor professor : professors) {
+            if (professor.getId() == id) {
+                return professor;
+            }
+        }
+        return null;
+    }
+
+}
